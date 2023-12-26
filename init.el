@@ -235,6 +235,10 @@ If the new path's directories does not exist, create them."
 ;(load-file (expand-file-name "extras/researcher.el" user-emacs-directory))
 
 ;; Personal Extensions
+
+(load-file (expand-file-name "extras/cowboyd.el" user-emacs-directory))
+
+;; Personal Extensions for JavaScript
 (load-file (expand-file-name "extras/javascript.el" user-emacs-directory))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
