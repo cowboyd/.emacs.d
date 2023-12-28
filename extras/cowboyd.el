@@ -51,7 +51,9 @@
   :ensure t
   :config
   (diminish 'which-key-mode)
-  (diminish 'eldoc-mode))
+  (diminish 'eldoc-mode)
+  :custom
+  (flymake-mode-line-lighter ""))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
