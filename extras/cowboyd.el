@@ -167,3 +167,13 @@
 
 (winner-mode)
 (define-key global-map (kbd "C-c q") 'winner-undo)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Eglot LSP
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
+(define-key eglot-mode-map (kbd "C-c .") 'eglot-code-actions)
+(define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
