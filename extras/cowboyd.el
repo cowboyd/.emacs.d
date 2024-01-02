@@ -106,6 +106,7 @@
 
 (use-package undo-tree
   :ensure t
+  :diminish
   :chords (("uu" . undo-tree-visualize))
   :custom
   (undo-tree-auto-save-history t)
