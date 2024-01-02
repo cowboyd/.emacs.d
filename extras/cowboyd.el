@@ -165,8 +165,24 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; restore the previous windowing configuration
 (winner-mode)
-(define-key global-map (kbd "C-c q") 'winner-undo)
+(define-key global-map (kbd "C-c C-q") 'winner-undo)
+
+;; This makes the split super simple and thereby consisent by always
+;; splitting horizontally by half.
+
+(setq split-height-threshold nil)
+(add-hook 'window-configuration-change-hook
+          #'@cowboyd/window-configuration-change-hook)
+
+(defun @cowboyd/window-configuration-change-hook ()
+  "Set the `split-width-threshold' so that the screen only splits once.
+For example, if the frame is 360 columns wide, then we want the
+`split-width-threshold' to be 181. That way, when you split
+horizontally, the two new windows will each be 180 columns wide, and
+sit just below the threshold."
+  (setq split-width-threshold (+ 1 (/ (frame-width) 2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
