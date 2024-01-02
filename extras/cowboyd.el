@@ -157,3 +157,12 @@
 (use-package git-link
   :ensure t
   :after git-timemachine)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Windowing helpers
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(winner-mode)
+(define-key global-map (kbd "C-c q") 'winner-undo)
