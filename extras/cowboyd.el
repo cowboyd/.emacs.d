@@ -186,10 +186,14 @@ sit just below the threshold."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Eglot LSP
+;;; Eglot LSP key bindings
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
 (define-key eglot-mode-map (kbd "C-c .") 'eglot-code-actions)
 (define-key eglot-mode-map (kbd "C-c f") 'eglot-format)
+(define-key eglot-mode-map (kbd "C-c !") 'flymake-show-buffer-diagnostics)
+(define-key eglot-mode-map (kbd "C-c C-g !") 'flymake-show-project-diagnostics)
+(define-key eglot-mode-map (kbd "C-c C-g C-n") 'flymake-goto-next-error)
+(define-key eglot-mode-map (kbd "C-c C-g C-p") 'flymake-goto-prev-error)
