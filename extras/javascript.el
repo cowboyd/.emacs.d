@@ -5,7 +5,9 @@
 ;; executable in their `exec-path'
 (use-package add-node-modules-path
   :ensure t
-  :hook (prog-mode . add-node-modules-path))
+  :hook (prog-mode . add-node-modules-path)
+  :custom
+  (add-node-modules-path-command '("pnpm bin")))
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'"    . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'"    . tsx-ts-mode))
