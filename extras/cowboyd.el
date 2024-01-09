@@ -197,3 +197,17 @@ sit just below the threshold."
 (define-key eglot-mode-map (kbd "C-c C-g !") 'flymake-show-project-diagnostics)
 (define-key eglot-mode-map (kbd "C-c C-g C-n") 'flymake-goto-next-error)
 (define-key eglot-mode-map (kbd "C-c C-g C-p") 'flymake-goto-prev-error)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; GraphQL
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package graphql-ts-mode
+  :ensure t
+  :mode ("\\.graphql\\'" "\\.gql\\'")
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(graphql "https://github.com/bkegley/tree-sitter-graphql"))))
