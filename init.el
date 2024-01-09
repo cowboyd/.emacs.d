@@ -200,6 +200,8 @@ If the new path's directories does not exist, create them."
 
 (use-package emacs
   :config
+  (when (string-equal system-type "windows-nt")
+    (set-frame-font "Cascadia Code"))
   (load-theme 'modus-vivendi))          ; for light theme, use modus-operandi
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
