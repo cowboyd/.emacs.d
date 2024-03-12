@@ -25,20 +25,21 @@
 		  nil))))
 
 (defun @cowboyd/js-project-find-function (dir)
-  (let* ((marker nil)
-         (root (catch 'done
-		 (locate-dominating-file
-                  default-directory
-                  (lambda (d)
-                    (dolist (f '("package.json" "deno.json"))
-                      (when (file-exists-p (expand-file-name f d))
-			(setq marker f)
-			(throw 'done d))))))))
+  (when eglot-lsp-context
+    (let* ((marker nil)
+           (root (catch 'done
+		   (locate-dominating-file
+                    default-directory
+                    (lambda (d)
+                      (dolist (f '("package.json" "deno.json"))
+			(when (file-exists-p (expand-file-name f d))
+			  (setq marker f)
+			  (throw 'done d))))))))
 
-    (when root
-      ;; Use experimental eglot--project project type which has some
-      ;; space for user-defined props, `:marker' in this case
-      `(eglot--project ,root :marker ,marker))))
+      (when root
+	;; Use experimental eglot--project project type which has some
+	;; space for user-defined props, `:marker' in this case
+	`(eglot--project ,root :marker ,marker)))))
 
 (add-hook 'project-find-functions '@cowboyd/js-project-find-function)
 (add-to-list 'eglot-server-programs
