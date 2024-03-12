@@ -13,30 +13,34 @@
 (add-to-list 'auto-mode-alist '("\\.tsx\\'"    . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'"    . js-ts-mode))
 
-(defun @cowboyd/find-js-marker ()
-  (catch 'done
-    (locate-dominating-file
-     default-directory
-     (lambda (d)
-       (dolist (f '("package.json" "deno.json"))
-         (let ((marker (expand-file-name f d)))
-           (when (file-exists-p marker) (throw 'done marker))))))))
+(defun @cowboyd/deno-lsp-or-typescript-language-server (&optional interactive project)	 
+  (let ((marker (and (eq (car project) 'eglot--project)
+                     (plist-get (cddr project) :marker))))
+	   (cond ((string= marker "package.json")
+		  '("typescript-language-server" "--stdio"))
+		 ((string= marker "deno.json")
+		  '("deno" "lsp" :initializationOptions '(:enable t :lint t)))
+		 (interactive
+		  (message "Can't guess server invocation for '%s'" (project-root project))
+		  nil))))
 
-(defun @cowboyd/deno-lsp-or-typescript-language-server ()
-  (lambda (&optional _interactive)
-    (let* ((m (@cowboyd/find-js-marker)))
-      (cdr
-       (assoc
-        (file-name-nondirectory m)
-        '(("package.json" "typescript-language-server" "--stdio")
-          ("deno.json" "deno" "lsp" "--unstable" :initializationOptions '(:enable t :lint t))))))))
+(defun @cowboyd/js-project-find-function (dir)
+  (let* ((marker nil)
+         (root (catch 'done
+		 (locate-dominating-file
+                  default-directory
+                  (lambda (d)
+                    (dolist (f '("package.json" "deno.json"))
+                      (when (file-exists-p (expand-file-name f d))
+			(setq marker f)
+			(throw 'done d))))))))
 
-;; (defun my/project-find-function (dir)
-;;   (when-let ((f (and (boundp eglot-lsp-context) eglot-lsp-context (@cowboyd/find-js-marker))))
-;;     `(transient . ,(file-name-directory f))))
+    (when root
+      ;; Use experimental eglot--project project type which has some
+      ;; space for user-defined props, `:marker' in this case
+      `(eglot--project ,root :marker ,marker))))
 
-;; (add-hook 'project-find-functions 'my/project-find-function)
+(add-hook 'project-find-functions '@cowboyd/js-project-find-function)
 (add-to-list 'eglot-server-programs
-             `((js-mode (typescript-ts-base-mode :language-id "typescript")) .
-               ,(@cowboyd/deno-lsp-or-typescript-language-server)))
-
+             `((js-mode (typescript-ts-base-mode :language-id "typescript"))
+	       . @cowboyd/deno-lsp-or-typescript-language-server))

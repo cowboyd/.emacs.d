@@ -86,7 +86,7 @@
 ;;  - https://www.masteringemacs.org/article/seamlessly-merge-multiple-documentation-sources-eldoc
 
 (use-package eglot
-  ;; no :ensure t here because it's built-in
+  :ensure t
 
   ;; Configure hooks to automatically turn-on eglot for selected modes
   ; :hook
@@ -101,4 +101,6 @@
   ;; Sometimes you need to tell Eglot where to find the language server
   ; (add-to-list 'eglot-server-programs
   ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+
+  :pin gnu-devel
   )

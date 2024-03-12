@@ -45,7 +45,8 @@
 ;; MELPA packages quickly:
 ;;
 (with-eval-after-load 'package
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("gnu-devel" . "https://elpa.gnu.org/devel/") t))
 
 ;; If you want to turn off the welcome screen, uncomment this
 (setopt inhibit-splash-screen t)
