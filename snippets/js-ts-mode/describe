@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: describe
+# key: desc
+# group: bdd
+# --
+describe("$1", () => { $0 });

@@ -243,8 +243,34 @@ sit just below the threshold."
 	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")
 	  (gherkin "https://github.com/SamyAB/tree-sitter-gherkin"))))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Make sure that Emacs has the same exec path as the shell
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package exec-path-from-shell
   :ensure t
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Snippets make life good
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun @cowboyd/yas-maybe-eglot-format-region (&optional beg end)
+  "Format from `beg' to `end' if `eglot' is managing the current buffer"
+  (when (and (fboundp 'eglot-managed-p) (eglot-managed-p))
+    (eglot-format)))
+
+(use-package "yasnippet"
+  :ensure t
+  :diminish (yas-global-mode yas-minor-mode)
+  :hook (yas-after-exit-snippet . @cowboyd/yas-maybe-eglot-format-region)
+  :config)
+
+(yas-global-mode 1)

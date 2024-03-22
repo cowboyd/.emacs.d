@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: expect
+# key: exp
+# group: bdd
+# --
+expect($1)$0
