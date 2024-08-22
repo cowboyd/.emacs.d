@@ -79,12 +79,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Kill line if now region specified
+;;; Setup crux with lots of very handy dailing editing functions
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package crux
   :ensure t
-  :config (crux-with-region-or-line kill-region))
+  :config (crux-with-region-or-line kill-region)
+  :bind (("C-c D" . crux-delete-file-and-buffer)
+	 ("C-c d" . crux-duplicate-current-line-or-region)
+	 ("C-c s" . crux-swap-windows)
+	 ("C-c k" . crux-kill-other-buffers)
+	 ("C-c R" . crux-rename-file-and-buffer)
+	 ("S-<return>" . crux-smart-open-line)
+	 ("C-S-<return>" . crux-smart-open-line-above)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
