@@ -276,8 +276,20 @@ sit just below the threshold."
 
 (use-package "yasnippet"
   :ensure t
-  :diminish (yas-global-mode yas-minor-mode)
-  :hook (yas-after-exit-snippet . @cowboyd/yas-maybe-eglot-format-region)
-  :config)
+  :diminish (yas-global-mode yas-minor-mode))
 
 (yas-global-mode 1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Smartparens for balanced editing
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+  :config
+  ;; load default config
+  (require 'smartparens-config))

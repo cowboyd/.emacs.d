@@ -9,9 +9,16 @@
   :custom
   (add-node-modules-path-command '("pnpm bin")))
 
+(setq js-indent-level 2)
+
 (add-to-list 'auto-mode-alist '("\\.ts\\'"    . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'"    . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'"    . js-ts-mode))
+
+(add-to-list 'auto-mode-alist '("\\.mjs\\'"    . js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cjs\\'"    . js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.mts\\'"    . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cts\\'"    . typescript-ts-mode))
 
 (defun @cowboyd/deno-lsp-or-typescript-language-server (&optional interactive project)	 
   (let ((marker (and (eq (car project) 'eglot--project)
