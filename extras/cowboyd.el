@@ -107,18 +107,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Undo as a tree of alternate realities.
+;;; Use vundo to tree the undo history as though it were a git history.
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package undo-tree
+(use-package vundo
   :ensure t
   :diminish
-  :chords (("uu" . undo-tree-visualize))
-  :custom
-  (undo-tree-auto-save-history t)
-  (undo-tree-history-directory-alist `((".*" . ,temporary-file-directory)))
-  :config (global-undo-tree-mode))
+  :chords (("uu" . vundo))
+  :custom (vundo-glyph-alist vundo-unicode-symbols))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
