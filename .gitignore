@@ -9,3 +9,8 @@
 /tree-sitter/
 /emacs-backup/
 /server/
+/.mc-lists.el
+/.lsp-session-v1
+/multisession/
+/tramp
+/url/
