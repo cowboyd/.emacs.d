@@ -267,7 +267,7 @@ If the new path's directories does not exist, create them."
 			   gptel-fn-complete graphql-ts-mode json-mode
 			   kind-icon magit marginalia markdown-mode
 			   minuet move-text multiple-cursors orderless
-			   smartparens super-save use-package-chords
+			   paredit super-save use-package-chords
 			   vertico vterm vundo wgrep yaml-mode
 			   yasnippet)))
 (custom-set-faces

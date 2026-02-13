@@ -287,16 +287,22 @@ sit just below the threshold."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Smartparens for balanced editing
+;;; Paredit for lisp dialects
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package smartparens
+(use-package paredit
   :ensure t
-  :diminish smartparens-mode
-  :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+  :diminish paredit-mode
+  :hook (emacs-lisp-mode
+         lisp-mode
+         lisp-interaction-mode
+         scheme-mode
+         clojure-mode
+         ielm-mode)
   :config
-  ;; load default config
-  (require 'smartparens-config))
+  ;; Disable electric-pair-mode when paredit is active
+  (add-hook 'paredit-mode-hook
+            (lambda () (electric-pair-local-mode -1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
