@@ -137,9 +137,16 @@
   (interactive)
   (magit-status (project-root (project-current))))
 
+(defun @cowboyd/project-agent-shell ()
+  "Open an agent-shell in the current project root."
+  (interactive)
+  (let ((default-directory (project-root (project-current))))
+    (agent-shell)))
+
 (use-package project
   :config
-  (add-to-list 'project-switch-commands `(@cowboyd/project-magit-status "Magit" "m") t))
+  (add-to-list 'project-switch-commands `(@cowboyd/project-magit-status "Magit" "m") t)
+  (add-to-list 'project-switch-commands `(@cowboyd/project-agent-shell "Agent Shell" "a") t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -224,7 +231,7 @@ sit just below the threshold."
 	'((bash "https://github.com/tree-sitter/tree-sitter-bash")
 	  (c "https://github.com/tree-sitter/tree-sitter-c")
 	  (cmake "https://github.com/uyha/tree-sitter-cmake")
-	  (common-lisp "https://github.com/theHamsta/tree-sitter-commonlisp")
+	  (common-lisp "https://github.com/tree-sitter-grammars/tree-sitter-commonlisp")
 	  (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
 	  (css "https://github.com/tree-sitter/tree-sitter-css")
 	  (csharp "https://github.com/tree-sitter/tree-sitter-c-sharp")
@@ -233,18 +240,18 @@ sit just below the threshold."
 	  (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
 	  (graphql "https://github.com/bkegley/tree-sitter-graphql")
 	  (html "https://github.com/tree-sitter/tree-sitter-html")
-	  (js "https://github.com/tree-sitter/tree-sitter-javascript")
+	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
 	  (json "https://github.com/tree-sitter/tree-sitter-json")
 	  (lua "https://github.com/Azganoth/tree-sitter-lua")
 	  (make "https://github.com/alemuller/tree-sitter-make")
-	  (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+	  (markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown")
 	  (python "https://github.com/tree-sitter/tree-sitter-python")
 	  (r "https://github.com/r-lib/tree-sitter-r")
 	  (rust "https://github.com/tree-sitter/tree-sitter-rust")
 	  (toml "https://github.com/tree-sitter/tree-sitter-toml")
 	  (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
 	  (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
-	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+	  (yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml")
 	  (gherkin "https://github.com/SamyAB/tree-sitter-gherkin"))))
 
 
@@ -302,3 +309,12 @@ sit just below the threshold."
 	 ("C->" . 'mc/mark-next-like-this)
 	 ("C-<" . 'mc/mark-previous-like-this)
 	 ("C-c C-<" . 'mc/mark-all-like-this)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Vterm is a very realistic shell experience in emacs
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package vterm
+    :ensure t)

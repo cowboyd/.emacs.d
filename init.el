@@ -244,6 +244,9 @@ If the new path's directories does not exist, create them."
 ;; Personal Extensions for JavaScript
 (load-file (expand-file-name "extras/javascript.el" user-emacs-directory))
 
+;; Setup AI Coding
+(load-file (expand-file-name "extras/ai.el" user-emacs-directory))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;   Built-in customization framework
@@ -255,8 +258,18 @@ If the new path's directories does not exist, create them."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(css-indent-offset 2)
  '(package-selected-packages
-   '(smartparens emoji-fontset yasnippet exec-path-from-shell eglot which-key)))
+   '(add-node-modules-path agent-shell aidermacs avy browse-kill-ring
+			   cape corfu-terminal crux diminish
+			   embark-consult exec-path-from-shell
+			   git-link git-timemachine gptel
+			   gptel-fn-complete graphql-ts-mode json-mode
+			   kind-icon magit marginalia markdown-mode
+			   minuet move-text multiple-cursors orderless
+			   smartparens super-save use-package-chords
+			   vertico vterm vundo wgrep yaml-mode
+			   yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
