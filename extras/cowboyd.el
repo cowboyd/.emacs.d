@@ -254,6 +254,22 @@ sit just below the threshold."
 	  (yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml")
 	  (gherkin "https://github.com/SamyAB/tree-sitter-gherkin"))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Combobulate — structured editing and navigation for tree-sitter modes
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package combobulate
+  :ensure t
+  :vc (:url "https://github.com/mickeynp/combobulate"
+       :rev :newest)
+  :custom
+  (combobulate-key-prefix "C-c o")
+  :hook ((js-ts-mode
+          typescript-ts-mode
+          tsx-ts-mode)
+         . combobulate-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
