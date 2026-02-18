@@ -68,6 +68,7 @@ or cursor is not at end of line (ignoring trailing whitespace)."
 
 (use-package minuet
   :ensure t
+  :diminish minuet-auto-suggestion-mode
   :hook (prog-mode . minuet-auto-suggestion-mode)
   :custom
   (minuet-provider 'claude)
