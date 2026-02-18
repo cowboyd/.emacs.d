@@ -260,16 +260,21 @@ If the new path's directories does not exist, create them."
  ;; If there is more than one, they won't work right.
  '(css-indent-offset 2)
  '(package-selected-packages
-   '(add-node-modules-path agent-shell aidermacs avy browse-kill-ring
-			   cape corfu-terminal crux diminish
-			   embark-consult exec-path-from-shell
-			   git-link git-timemachine gptel
-			   gptel-fn-complete graphql-ts-mode json-mode
-			   kind-icon magit marginalia markdown-mode
-			   minuet move-text multiple-cursors orderless
-			   paredit super-save use-package-chords
+   '(add-node-modules-path agent-shell agent-shell-attention aidermacs
+			   avy browse-kill-ring cape combobulate
+			   corfu-terminal crux diminish embark-consult
+			   exec-path-from-shell git-link
+			   git-timemachine gptel-fn-complete
+			   graphql-ts-mode json-mode kind-icon magit
+			   marginalia minuet move-text
+			   multiple-cursors orderless paredit
+			   smartparens super-save use-package-chords
 			   vertico vterm vundo wgrep yaml-mode
-			   yasnippet)))
+			   yasnippet))
+ '(package-vc-selected-packages
+   '((agent-shell-attention :url
+			    "https://github.com/ultronozm/agent-shell-attention.el")
+     (combobulate :url "https://github.com/mickeynp/combobulate"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

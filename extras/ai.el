@@ -1,5 +1,11 @@
 ;;; ai.el --- AI tools configuration -*- lexical-binding: t; -*-
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; agent-shell — AI coding agent inside Emacs
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package agent-shell
   :ensure t
   :bind-keymap ("C-c a" . agent-shell-prefix-map)
@@ -21,6 +27,27 @@
   (agent-shell-anthropic-authentication
       (agent-shell-anthropic-make-authentication :login t)))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; agent-shell-attention — mode-line indicator for pending agent buffers
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package agent-shell-attention
+  :vc (:url "https://github.com/ultronozm/agent-shell-attention.el")
+  :after agent-shell
+  :bind (:map agent-shell-prefix-map
+              ("." . agent-shell-attention-jump))
+  :custom
+  (agent-shell-attention-lighter " 🤖:%d")
+  (agent-shell-attention-render-function
+   (lambda (count _entries)
+     (when agent-shell-attention-lighter
+       (format agent-shell-attention-lighter count))))
+  :config
+  (agent-shell-attention-mode 1))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; gptel — LLM client for one-off prompts and rewrites
@@ -38,8 +65,8 @@
         (gptel-make-anthropic "Claude"
           :stream t
           :key (let ((key (auth-source-pick-first-password
-                          :host "api.anthropic.com"
-                          :user "apikey")))
+                           :host "api.anthropic.com"
+                           :user "apikey")))
                  (lambda () key)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
