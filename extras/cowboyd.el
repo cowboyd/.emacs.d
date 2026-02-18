@@ -52,6 +52,7 @@
   :config
   (diminish 'which-key-mode)
   (diminish 'eldoc-mode)
+  (diminish 'visual-line-mode)
   :custom
   (flymake-mode-line-lighter ""))
 
