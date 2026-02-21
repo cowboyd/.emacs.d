@@ -141,8 +141,19 @@
 (defun @cowboyd/project-agent-shell ()
   "Open an agent-shell in the current project root."
   (interactive)
-  (let ((default-directory (project-root (project-current))))
-    (agent-shell)))
+  (let* ((dir (project-root (project-current)))
+         (buf (seq-find (lambda (b)
+                          (with-current-buffer b
+                            (equal (expand-file-name default-directory)
+                                   (expand-file-name dir))))
+                        (agent-shell-buffers))))
+    (if buf
+        (pop-to-buffer buf)
+      (let ((default-directory dir))
+        (agent-shell-start
+         :config (or (agent-shell--resolve-preferred-config)
+                     (agent-shell-select-config
+                      :prompt "Start new agent: ")))))))
 
 (use-package project
   :config
