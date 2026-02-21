@@ -35,16 +35,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package agent-shell-attention
-  :vc (:url "https://github.com/ultronozm/agent-shell-attention.el")
+  :vc (:url "https://github.com/ultronozm/agent-shell-attention.el" :branch "main")
   :after agent-shell
   :bind (:map agent-shell-prefix-map
               ("." . agent-shell-attention-jump))
   :custom
   (agent-shell-attention-lighter " 🤖:%d")
-  (agent-shell-attention-render-function
-   (lambda (count _entries)
-     (when agent-shell-attention-lighter
-       (format agent-shell-attention-lighter count))))
+  (agent-shell-attention-show-zeros t)
   :config
   (agent-shell-attention-mode 1))
 
