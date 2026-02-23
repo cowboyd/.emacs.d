@@ -352,3 +352,22 @@ sit just below the threshold."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package vterm
     :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Manage mulitple terminals per project
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package project-terminal
+    :ensure t
+    :vc (:url "https://github.com/cowboyd/project-terminal.el" :branch "main")
+    :after vterm
+    :bind (:map project-prefix-map
+		("t" . project-terminal-toggle)
+		("T" . project-terminal-add))
+    :custom
+    ;; (project-terminal-height 0.25)   ;; Drawer height as a fraction of the frame
+    ;; (project-terminal-side 'bottom)  ;; Side of the frame (bottom, top, left, right)
+    (project-terminal-shell 'vterm) ;; Shell backend (eshell or vterm)
+    )
+
