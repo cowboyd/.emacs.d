@@ -156,6 +156,7 @@
                       :prompt "Start new agent: ")))))))
 
 (use-package project
+  :after (agent-shell magit)
   :config
   (add-to-list 'project-switch-commands `(@cowboyd/project-magit-status "Magit" "m") t)
   (add-to-list 'project-switch-commands `(@cowboyd/project-agent-shell "Agent Shell" "a") t))
