@@ -35,8 +35,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package agent-shell-attention
+  :ensure t
   :vc (:url "https://github.com/ultronozm/agent-shell-attention.el" :branch "main")
   :after agent-shell
+  :demand t
   :bind (:map agent-shell-prefix-map
               ("." . agent-shell-attention-jump))
   :custom

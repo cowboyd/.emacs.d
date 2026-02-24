@@ -141,6 +141,7 @@
 (defun @cowboyd/project-agent-shell ()
   "Open an agent-shell in the current project root."
   (interactive)
+  (require 'agent-shell)
   (let* ((dir (project-root (project-current)))
          (buf (seq-find (lambda (b)
                           (with-current-buffer b
@@ -156,7 +157,6 @@
                       :prompt "Start new agent: ")))))))
 
 (use-package project
-  :after (agent-shell magit)
   :config
   (add-to-list 'project-switch-commands `(@cowboyd/project-magit-status "Magit" "m") t)
   (add-to-list 'project-switch-commands `(@cowboyd/project-agent-shell "Agent Shell" "a") t))
