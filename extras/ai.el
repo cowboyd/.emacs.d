@@ -15,6 +15,7 @@
               ("n" . agent-shell-new-shell)
               ("f" . agent-shell-send-file)
               ("r" . agent-shell-send-region)
+              ("R" . agent-shell-send-region-to)
               ("d" . agent-shell-send-dwim)
               ("c" . agent-shell-prompt-compose)
               ("?" . agent-shell-help-menu)
@@ -25,7 +26,9 @@
     "Keymap for agent-shell commands.")
   :custom
   (agent-shell-anthropic-authentication
-      (agent-shell-anthropic-make-authentication :login t)))
+      (agent-shell-anthropic-make-authentication :login t))
+  (agent-shell-session-strategy 'new)
+  (agent-shell-prefer-viewport-interaction t))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -45,6 +48,12 @@
   (agent-shell-attention-lighter " 🤖:%d")
   (agent-shell-attention-show-zeros t)
   :config
+  (setq agent-shell-attention-notify-function
+        (if (eq system-type 'darwin)
+            (lambda (_buf title body)
+              (do-applescript
+               (format "display notification %S with title %S" body title)))
+          #'agent-shell-attention-notify-default))
   (agent-shell-attention-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
