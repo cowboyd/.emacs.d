@@ -258,22 +258,12 @@ If the new path's directories does not exist, create them."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(css-indent-offset 2)
- '(package-selected-packages
-   '(add-node-modules-path agent-shell agent-shell-attention aidermacs
-			   avy browse-kill-ring cape combobulate
-			   corfu-terminal crux diminish embark-consult
-			   exec-path-from-shell git-link
-			   git-timemachine gptel-fn-complete
-			   graphql-ts-mode json-mode kind-icon magit
-			   marginalia minuet move-text
-			   multiple-cursors orderless paredit
-			   smartparens super-save use-package-chords
-			   vertico vterm vundo wgrep yaml-mode
-			   yasnippet))
  '(package-vc-selected-packages
-   '((agent-shell-attention :url
-			    "https://github.com/ultronozm/agent-shell-attention.el")
-     (combobulate :url "https://github.com/mickeynp/combobulate"))))
+   '((knockknock :vc-backend Git :url
+                 "https://github.com/konrad1977/knockknock")
+     (project-terminal :url
+                       "https://github.com/cowboyd/project-terminal.el"
+                       :branch "main"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

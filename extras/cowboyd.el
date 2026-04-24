@@ -149,7 +149,10 @@
                                    (expand-file-name dir))))
                         (agent-shell-buffers))))
     (if buf
-        (pop-to-buffer buf)
+        (let ((vp (and agent-shell-prefer-viewport-interaction
+                       (agent-shell-viewport--buffer
+                        :shell-buffer buf :existing-only t))))
+          (pop-to-buffer (or vp buf)))
       (let ((default-directory dir))
         (agent-shell-start
          :config (or (agent-shell--resolve-preferred-config)
@@ -266,23 +269,6 @@ sit just below the threshold."
 	  (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
 	  (yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml")
 	  (gherkin "https://github.com/SamyAB/tree-sitter-gherkin"))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Combobulate — structured editing and navigation for tree-sitter modes
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package combobulate
-  :ensure t
-  :vc (:url "https://github.com/mickeynp/combobulate"
-       :rev :newest)
-  :custom
-  (combobulate-key-prefix "C-c o")
-  :hook ((js-ts-mode
-          typescript-ts-mode
-          tsx-ts-mode)
-         . combobulate-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
