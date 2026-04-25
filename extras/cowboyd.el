@@ -293,7 +293,7 @@ sit just below the threshold."
   (when (and (fboundp 'eglot-managed-p) (eglot-managed-p))
     (eglot-format)))
 
-(use-package "yasnippet"
+(use-package yasnippet
   :ensure t
   :diminish (yas-global-mode yas-minor-mode))
 
