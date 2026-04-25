@@ -10,10 +10,16 @@
   "Return a compact shell buffer name like \"Claude @ project\"."
   (format "%s @ %s" agent project))
 
-(defconst @cowboyd/agent-shell-viewport-idle-glyph "⚪️"
+;; Emoji with VS-16 (variation selectors) cause off-by-one cursor positioning
+;; in TTY Emacs across terminals (Ghostty, iTerm2, Windows Terminal): Emacs
+;; computes width as 2 cells but terminals inconsistently advance by 1, leaving
+;; ghost modelines in the buffer area during streaming output. ASCII in TTY.
+(defconst @cowboyd/agent-shell-viewport-idle-glyph
+  (if (display-graphic-p) "⚪️" "o")
   "Glyph shown when the viewport's shell is idle.")
 
-(defconst @cowboyd/agent-shell-viewport-busy-glyph "🟢"
+(defconst @cowboyd/agent-shell-viewport-busy-glyph
+  (if (display-graphic-p) "🟢" "*")
   "Glyph shown when the viewport's shell is working.")
 
 (defun @cowboyd/agent-shell-viewport-buffer-id ()
@@ -114,11 +120,14 @@
   (setq agent-shell-attention-render-function
         (lambda (pending active)
           (let* ((busy (- (or active 0) pending))
-                 (total (length (agent-shell-attention--live-agent-shell-buffers))))
+                 (total (length (agent-shell-attention--live-agent-shell-buffers)))
+                 (fmt (if (display-graphic-p)
+                          " %d🤖[⚡%d 🔔%d]"
+                        " %d agents [%d busy %d pending]")))
             (if (and (zerop total)
                      (not agent-shell-attention-show-zeros))
                 ""
-              (propertize (format " %d🤖[⚡%d 🔔%d]" total busy pending)
+              (propertize (format fmt total busy pending)
                           'mouse-face 'mode-line-highlight
                           'help-echo (format "%d agents, %d working, %d ready" total busy pending)
                           'local-map agent-shell-attention--mode-line-map)))))
