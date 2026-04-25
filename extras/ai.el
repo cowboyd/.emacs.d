@@ -77,6 +77,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package agent-shell-macext
+  :if (eq system-type 'darwin)
   :ensure t
   :vc (:url "https://github.com/cxa/agent-shell-macext")
   :hook (agent-shell-mode . agent-shell-macext-setup)
