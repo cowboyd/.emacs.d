@@ -252,21 +252,14 @@ If the new path's directories does not exist, create them."
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(css-indent-offset 2)
- '(package-vc-selected-packages
-   '((knockknock :vc-backend Git :url
-                 "https://github.com/konrad1977/knockknock")
-     (project-terminal :url
-                       "https://github.com/cowboyd/project-terminal.el"
-                       :branch "main"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setopt package-vc-selected-packages
+        '((knockknock :vc-backend Git :url
+                      "https://github.com/konrad1977/knockknock")
+          (project-terminal :url
+                            "https://github.com/cowboyd/project-terminal.el"
+                            :branch "main")))
+
+;; Route Customize's writes to a gitignored file so init.el stays clean.
+(setopt custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))

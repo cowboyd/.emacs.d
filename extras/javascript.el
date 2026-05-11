@@ -9,7 +9,8 @@
   :custom
   (add-node-modules-path-command '("pnpm bin")))
 
-(setq js-indent-level 2)
+(setopt js-indent-level 2)
+(setopt css-indent-offset 2)
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'"    . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'"    . tsx-ts-mode))
