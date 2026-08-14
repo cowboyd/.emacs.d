@@ -63,9 +63,7 @@
               ("d" . agent-shell-send-dwim)
               ("c" . agent-shell-prompt-compose)
               ("?" . agent-shell-help-menu)
-              ("." . agent-shell-attention-jump)
-              ("i" . minuet-show-suggestion)
-              ("F" . gptel-fn-complete))
+              ("." . agent-shell-attention-jump))
   :init
   (defvar agent-shell-prefix-map (make-sparse-keymap)
     "Keymap for agent-shell commands.")
@@ -142,31 +140,37 @@
                           'mouse-face 'mode-line-highlight
                           'help-echo (format "%d agents, %d working, %d ready" total busy pending)
                           'local-map agent-shell-attention--mode-line-map)))))
-  ;; Fix: upstream uses :request but agent-shell renamed it to :acp-request,
-  ;; and the permission dialog selects the shell buffer before the notification
-  ;; check runs, so we check the viewport too.
-  (advice-add 'agent-shell--on-request :before
-    (cl-function
-     (lambda (&key state acp-request &allow-other-keys)
-       (when (and state acp-request)
-         (let* ((buffer (map-elt state :buffer))
-                (label (agent-shell-attention--request-label acp-request)))
-           (when (and buffer label)
-             (let* ((win (selected-window))
-                    (sel (window-buffer win))
-                    (vp (and (fboundp 'agent-shell-viewport--buffer)
-                             (agent-shell-viewport--buffer
-                              :shell-buffer buffer :existing-only t)))
-                    (visible (or (eq sel buffer) (eq sel vp))))
-               (unless visible
-                 (let ((title (format "%s agent" (buffer-name buffer))))
-                   (message "%s %s: %s"
-                            agent-shell-attention-message-prefix
-                            (buffer-name buffer) label)
-                   (agent-shell-attention--maybe-notify buffer title label)))
-               (agent-shell-attention--mark-buffer buffer label
-                                                   :force (not visible))))))))
-    '((name . fix-request-keyword)))
+  ;; Drive attention from the new `permission-request' event instead of
+  ;; advising `agent-shell--on-request'. The viewport buffer counts as
+  ;; visible so we don't notify when the user is already looking at it.
+  (defun @cowboyd/agent-shell-permission-label (call)
+    (let ((title (or (map-elt call :title) "Permission required"))
+          (kind  (map-elt call :kind)))
+      (concat "Permission: " title
+              (if kind (format " (%s)" kind) ""))))
+  (defun @cowboyd/agent-shell-on-permission-request (event)
+    (let* ((call (map-nested-elt event '(:data :tool-call)))
+           (label (@cowboyd/agent-shell-permission-label call))
+           (buffer (current-buffer))
+           (sel (window-buffer (selected-window)))
+           (vp (and (fboundp 'agent-shell-viewport--buffer)
+                    (agent-shell-viewport--buffer
+                     :shell-buffer buffer :existing-only t)))
+           (visible (or (eq sel buffer) (eq sel vp))))
+      (if visible
+          (agent-shell-attention--mark-buffer buffer label)
+        (let ((title (format "%s agent" (buffer-name buffer))))
+          (message "%s %s: %s"
+                   agent-shell-attention-message-prefix
+                   (buffer-name buffer) label)
+          (agent-shell-attention--maybe-notify buffer title label)
+          (agent-shell-attention--mark-buffer buffer label :force t)))))
+  (defun @cowboyd/agent-shell-subscribe-attention ()
+    (agent-shell-subscribe-to
+     :shell-buffer (current-buffer)
+     :event 'permission-request
+     :on-event #'@cowboyd/agent-shell-on-permission-request))
+  (add-hook 'agent-shell-mode-hook #'@cowboyd/agent-shell-subscribe-attention)
   (advice-add 'agent-shell-attention--jump-to-buffer :around
     (lambda (fn buffer)
       (let ((viewport (and agent-shell-prefer-viewport-interaction
@@ -202,73 +206,3 @@
               (agent-shell-attention--clear-buffer buffer))))))
     '((name . viewport-aware)))
   (agent-shell-attention-mode 1))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; gptel — LLM client for one-off prompts and rewrites
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package gptel
-  :ensure t
-  :custom
-  (gptel-model 'claude-opus-4-6)
-  (gptel-expert-commands t)
-  (gptel-rewrite-default-action 'accept)
-  :config
-  (setq gptel-backend
-        (gptel-make-anthropic "Claude"
-          :stream t
-          :key (let ((key (auth-source-pick-first-password
-                           :host "api.anthropic.com"
-                           :user "apikey")))
-                 (lambda () key)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; gptel-fn-complete — complete function at point using an LLM
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package gptel-fn-complete
-  :ensure t
-  :after gptel)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; minuet — inline code completion as-you-type
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun @cowboyd/minuet-block-suggestions ()
-  "Return non-nil to block suggestions in unhelpful contexts.
-Blocks when buffer is read-only, cursor is at beginning of line,
-or cursor is not at end of line (ignoring trailing whitespace)."
-  (not (and (not buffer-read-only)
-            (not (bolp))
-            (looking-at-p "\\s-*$"))))
-
-(use-package minuet
-  :ensure t
-  :diminish minuet-auto-suggestion-mode
-  :hook (prog-mode . minuet-auto-suggestion-mode)
-  :custom
-  (minuet-provider 'claude)
-  (minuet-n-completions 1)
-  (minuet-add-single-line-entry nil)
-  (minuet-auto-suggestion-debounce-delay 0.3)
-  :bind (:map minuet-active-mode-map
-              ("M-A" . minuet-accept-suggestion)
-              ("M-a" . minuet-accept-suggestion-line)
-              ("M-n" . minuet-next-suggestion)
-              ("M-p" . minuet-previous-suggestion)
-              ("M-e" . minuet-dismiss-suggestion))
-  :config
-  (plist-put minuet-claude-options :model "claude-opus-4-6")
-  (plist-put minuet-claude-options :api-key
-             (let ((key (auth-source-pick-first-password
-                         :host "api.anthropic.com"
-                         :user "apikey")))
-               (lambda () key)))
-  (add-hook 'minuet-auto-suggestion-block-predicates
-            #'@cowboyd/minuet-block-suggestions -100))
