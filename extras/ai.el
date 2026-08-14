@@ -6,6 +6,15 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun @cowboyd/agent-shell-dot-subdir (subdir)
+  (let* ((cwd (string-remove-suffix "/" (agent-shell-cwd)))
+         (name (file-name-nondirectory cwd))
+         (parent (file-name-nondirectory (directory-file-name (file-name-directory cwd)))))
+    (expand-file-name
+     subdir
+     (expand-file-name name
+                       (expand-file-name parent "~/agent-transcripts/")))))
+
 (defun @cowboyd/agent-shell-buffer-name (agent project)
   "Return a compact shell buffer name like \"Claude @ project\"."
   (format "%s @ %s" agent project))
@@ -67,7 +76,8 @@
       (agent-shell-anthropic-make-authentication :login t))
   (agent-shell-session-strategy 'prompt)
   (agent-shell-prefer-viewport-interaction t)
-  (agent-shell-buffer-name-format #'@cowboyd/agent-shell-buffer-name))
+  (agent-shell-buffer-name-format #'@cowboyd/agent-shell-buffer-name)
+  (agent-shell-dot-subdir-function #'@cowboyd/agent-shell-dot-subdir))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
